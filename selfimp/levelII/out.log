@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "./intro.py", line 81, in <module>
+    Yte_predict = nn.predict(Xte_rows)
+  File "./intro.py", line 53, in predict
+    distances = np.sum(np.abs(self.Xtr - X[i,:]), axis=1)
+MemoryError
