@@ -39,6 +39,7 @@ def eval_numberical_gradient(f, x):
 
 
 def CIFAR_loss_fun(W):
+    loss_sum = 0.0
     #use L_i_vectorized function, after it I will use
     #pure L without iteration
     for i in range(0, Xtr.shape[0]):
@@ -47,7 +48,9 @@ def CIFAR_loss_fun(W):
         #full W to compute scores
         #wrong: loss_i = L_i_vectorized(Xtr_col[i], y_pos, W[:, i])
         loss_i[0, i] = L_i_vectorized(Xtr_col[:, i], y_pos, W)        
-    return loss_i
+    for i in range(0, loss_i.shape[0]):
+        loss_sum += loss_i[0, i]
+    return loss_sum
 
 Xtr, Ytr, Xte, Yte = load_CIFAR10("../CIFAR")
 Xtr_col = Xtr.reshape(32*32*3, Xtr.shape[0])
