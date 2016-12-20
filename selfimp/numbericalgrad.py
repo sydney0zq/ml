@@ -3,6 +3,9 @@
 #2016-12-09 root <root@VM-17-202-debian>
 
 import numpy as np
+from linearclassification import L_i
+from data_utils import load_CIFAR10
+
 
 def eval_numberical_gradient(f, x):
     """
@@ -18,8 +21,9 @@ def eval_numberical_gradient(f, x):
     #np.nditer: It inter as follows:
     #------------->
     #...
-    #You should know that it.multi.index is the index
-    #of the matrix.And do not forget to interate
+    #------------->
+    #You should know that it.multi_index is the index
+    #of the matrix. And do not forget to interate
     it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
     while not it.finished:
         #evaluate function at x+h
@@ -32,6 +36,28 @@ def eval_numberical_gradient(f, x):
         grad[ix] = (fxh - fx) / h   #the slope
         it.iternext()           #step to next dimension
     return grad
+
+
+def CIFAR_loss_fun(W):
+    return L_i(X_train, Y_train, W)
+
+
+X_train, Y_train, X_te, Y_te = load_CIFAR10("../CIFAR")
+
+
+W = np.random.rand(10, 3073) * 0.001        #Random weight
+df = eval_numberical_gradient(CIFAR_loss_fun, W)    #Get the grad
+
+
+
+
+
+#print f(np.array([[1,2]]))
+print df
+
+
+
+
 
 
 
