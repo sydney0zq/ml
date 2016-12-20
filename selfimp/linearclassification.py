@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #2016-12-05 root <root@VM-17-202-debian>
 
-import numpy
+import numpy as np
 
 #Here is the loss function (without regularization) implemented in Python, in both unvectorized and half- vectorized form:
 

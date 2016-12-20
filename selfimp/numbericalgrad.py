@@ -3,7 +3,7 @@
 #2016-12-09 root <root@VM-17-202-debian>
 
 import numpy as np
-from linearclassification import L_i
+from linearclassification import *
 from data_utils import load_CIFAR10
 
 
@@ -39,21 +39,31 @@ def eval_numberical_gradient(f, x):
 
 
 def CIFAR_loss_fun(W):
-    return L_i(X_train, Y_train, W)
+    #use L_i_vectorized function, after it I will use
+    #pure L without iteration
+    for i in range(0, Xtr.shape[0]):
+        y_pos = Ytr[i]
+        #This chooses each column of training data and
+        #full W to compute scores
+        #wrong: loss_i = L_i_vectorized(Xtr_col[i], y_pos, W[:, i])
+        loss_i[0, i] = L_i_vectorized(Xtr_col[:, i], y_pos, W)        
+    return loss_i
 
+Xtr, Ytr, Xte, Yte = load_CIFAR10("../CIFAR")
+Xtr_col = Xtr.reshape(32*32*3, Xtr.shape[0])
+ones_row = np.ones((1, Xtr.shape[0]))
+Xtr_col = np.append(Xtr_col, ones_row, axis = 0)
 
-X_train, Y_train, X_te, Y_te = load_CIFAR10("../CIFAR")
-
+loss_i = np.zeros((1, Xtr.shape[0]))
 
 W = np.random.rand(10, 3073) * 0.001        #Random weight
 df = eval_numberical_gradient(CIFAR_loss_fun, W)    #Get the grad
 
-
-
-
-
-#print f(np.array([[1,2]]))
 print df
+
+
+
+
 
 
 
