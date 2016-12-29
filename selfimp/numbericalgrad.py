@@ -25,6 +25,7 @@ def eval_numberical_gradient(f, x):
     #You should know that it.multi_index is the index
     #of the matrix. And do not forget to interate
     it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
+    print "Now the iterate begins..."
     while not it.finished:
         #evaluate function at x+h
         ix = it.multi_index
@@ -34,7 +35,11 @@ def eval_numberical_gradient(f, x):
         x[ix] = old_value       #restore to previous value!!
         #compute the partial derivative
         grad[ix] = (fxh - fx) / h   #the slope
+        print "Now the fxh: " + str(fxh) + "\tfx: " + str(fx) 
+        print "and the grad"+ str(ix) + "is " + str(grad[ix]) + '\n'
         it.iternext()           #step to next dimension
+
+    print "Now the iterates ends..."
     return grad
 
 
@@ -42,14 +47,13 @@ def CIFAR_loss_fun(W):
     loss_sum = 0.0
     #use L_i_vectorized function, after it I will use
     #pure L without iteration
+    #ATTENTION: Once I have choose to sum the loss_i up to one variable
+    #But it cause a big diseaster
     for i in range(0, Xtr.shape[0]):
         y_pos = Ytr[i]
         #This chooses each column of training data and
         #full W to compute scores
-        #wrong: loss_i = L_i_vectorized(Xtr_col[i], y_pos, W[:, i])
-        loss_i[0, i] = L_i_vectorized(Xtr_col[:, i], y_pos, W)        
-    for i in range(0, loss_i.shape[0]):
-        loss_sum += loss_i[0, i]
+        loss_sum += L_i_vectorized(Xtr_col[:, i], y_pos, W)        
     return loss_sum
 
 Xtr, Ytr, Xte, Yte = load_CIFAR10("../CIFAR")
@@ -57,12 +61,14 @@ Xtr_col = Xtr.reshape(32*32*3, Xtr.shape[0])
 ones_row = np.ones((1, Xtr.shape[0]))
 Xtr_col = np.append(Xtr_col, ones_row, axis = 0)
 
-loss_i = np.zeros((1, Xtr.shape[0]))
-
 W = np.random.rand(10, 3073) * 0.001        #Random weight
+print "The random W is " 
+print W
+print "\nNow begins to calc the gradient, using the loss function \
+the W matrix"
 df = eval_numberical_gradient(CIFAR_loss_fun, W)    #Get the grad
 
-print df
+print "The final grad is " + str(df)
 
 
 

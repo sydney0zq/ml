@@ -1,3 +1,4 @@
 #dir to ignore
 anaconda/
 CIFAR/  
+*.pyc
