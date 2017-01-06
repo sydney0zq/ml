@@ -1,6 +1,8 @@
-###Guide
+##Guide
 
 ####From stackoverflow
+
+<http://stats.stackexchange.com/questions/36247/how-to-get-started-with-neural-networks>
 
 Neural networks have been around for a while, and they've changed dramatically over the years. If you only poke around on the web, you might end up with the impression that "neural network" means multi-layer feedforward network trained with back-propagation. Or, you might come across any of the dozens of rarely used, bizarrely named models and conclude that neural networks are more of a zoo than a research project. Or that they're a novelty. Or...
 
