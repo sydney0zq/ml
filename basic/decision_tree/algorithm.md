@@ -12,6 +12,8 @@
 
 A decision tree is a decision support tool that uses a tree-like graph or model of decisions and their possible consequences, including chance event outcomes, resource costs, and utility. It is one way to display an algorithm.
 
+<http://scikit-learn.org/stable/modules/tree.html>
+
 ![](../pic/04.jpg)
 
 > 上图框中的数字是天数。
@@ -68,7 +70,25 @@ A: 优: 直观, 便于理解, 小规模数据有效
 类比较多的时候, 错误增加的比较快
 可规模性一般
 
+Important:
+> Notes: 在将feature转化为值的时候, 使用的是scilearn的库, 假如在age中有三个值, 如middle_age, youth, senior那么这个库会将它指示为3个值, 比如1, 0, 0作为中年; 假如age有两个值, 那么就会只使用1, 0 来指示。生成的列表如下所示
 
+dummyX: 
+[[ 0.  0.  1.  0.  1.  1.  0.  0.  1.  0.]
+[ 0.  0.  1.  1.  0.  1.  0.  0.  1.  0.]
+[ 1.  0.  0.  0.  1.  1.  0.  0.  1.  0.]
+[ 0.  1.  0.  0.  1.  0.  0.  1.  1.  0.]
+[ 0.  1.  0.  0.  1.  0.  1.  0.  0.  1.]
+[ 0.  1.  0.  1.  0.  0.  1.  0.  0.  1.]
+[ 1.  0.  0.  1.  0.  0.  1.  0.  0.  1.]
+[ 0.  0.  1.  0.  1.  0.  0.  1.  1.  0.]
+[ 0.  0.  1.  0.  1.  0.  1.  0.  0.  1.]
+[ 0.  1.  0.  0.  1.  0.  0.  1.  0.  1.]
+[ 0.  0.  1.  1.  0.  0.  0.  1.  0.  1.]
+[ 1.  0.  0.  1.  0.  0.  0.  1.  1.  0.]
+[ 1.  0.  0.  0.  1.  1.  0.  0.  0.  1.]
+[ 0.  1.  0.  1.  0.  0.  0.  1.  1.  0.]]
 
-
+其中不含有关于多少feature的信息。这个信息在`vec.get_feature_names()`方法中可以得到。得到的结果是这样的
+['age=middle_aged', 'age=senior', 'age=youth', 'credit_rating=excellent', 'credit_rating=fair', 'income=high', 'income=low', 'income=medium', 'student=no', 'student=yes']
 
