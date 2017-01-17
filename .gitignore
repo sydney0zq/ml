@@ -3,3 +3,7 @@ anaconda/
 CIFAR/  
 *.pyc
 *.swp
+_
+*.o
+*.out
+
