@@ -89,6 +89,45 @@ $\beta 0$和$\beta 1$是真实的值, b0 和 b1 是对这两个值的估计。
 - ε 满足正态分布
 
 
+####简单线性回归实例
+
+```
+Number of TV ads(x)     Number of Cars sold(y)
+1                       14
+3                       24
+2                       18
+1                       17
+3                       27
+sum x = 10              sum y = 100
+ave x = 2               ave y = 20
+```
+
+![](../pic/lr-07.png)
+
+目标就是使得`sum of squares`最小。
+
+
+![](../pic/lr-08.png)
+![](../pic/lr-09.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
