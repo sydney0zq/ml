@@ -33,11 +33,19 @@
 
 ![](../pic/cov-04.png)
 
-> SST = SSR + SSE
-> //SS  --> sum of square
-> //SST --> total
-> //SSR --> residuals
-> //SSE --> error
+
+The total sum of squares (proportional to the variance of the data):
+$$SS_{\text{tot}}=\sum _{i}(y_{i}-{\bar {y}})^{2}$$
+
+The regression sum of squares, also called the explained sum of squares:
+$$SS_{\text{reg}}=\sum _{i}(f_{i}-{\bar {y}})^{2}$$
+
+The sum of squares of residuals, also called the residual sum of squares:
+$${\displaystyle SS_{\text{res}}=\sum _{i}(y_{i}-f_{i})^{2}=\sum _{i}e_{i}^{2}}$$
+
+The most general definition of the coefficient of determination is:
+$$R^{2}\equiv 1-{SS_{\rm {res}} \over SS_{\rm {tot}}}$$
+
 
 
 R 平方也有其局限性: R 平方随着自变量的增加会变大, R平方和样本量是有关系的。因此, 我们要对 R^2 进行修正, 
