@@ -2,7 +2,7 @@
 
 聚类(clustering)属于非监督学习(unsupervised learning)。无类别标记。
 
-![](../pic/km-00.jpg)
+![](../pic/kn-00.jpg)
 
 
 ###K-means 算法
