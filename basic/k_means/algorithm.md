@@ -38,9 +38,8 @@ Clustering 中的经典算法, 数据挖掘十大经典算法之一。
 4) 重复2), 3), 直到所有 c[i] 值的变化小于给定阈值
 
 
-![](../pic/kn-01.png)
 
-![](../doc/K_mean_Clustering.pdf)
+[K mean Clustering.pdf](../doc/K_mean_Clustering.pdf)
 
 优点: 速度快, 简单。
 缺点: **最终结果跟初始点选择有关**, 容易陷入局部最优, 需知道 K 值。
