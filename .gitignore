@@ -8,3 +8,5 @@ _
 *.out
 basic/svm/SVM-face.png
 deeplearning/src/*
+deeplearning/data/*
+__pycache__
