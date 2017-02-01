@@ -65,19 +65,36 @@ L: 神经网络的层数。求和是对于所有单个的训练实例 x 加起�
 
 ![](./pic/bp-07.gif)
 
-cost可以被写成神经网络输出的一个函数, 即我们定义的这个二次cost方程满足这点:
+cost 可以被写成神经网络输出的一个函数，即我们定义的这个二次 cost 方程满足这点：
 
 ![](./pic/bp-08.png)
 
 
 > Hadamard product:
 > 元素对应相乘
+>
 > ![](./pic/bp-09.png)
 
 
-Backpropagation 的四个关键公式: 见pdf
+Backpropagation 的四个关键公式：
+[Reference of Backpropagation](../engine/nn_ch2.pdf)
 
-![Reference of Backpropagation](../engine/nn_ch2.pdf)
+注意，公式和算法思想都在 PDF 中。不难，仔细理解。用 BP1 计算得到输出层的误差，再用 BP2 算出前面各层的误差。
+
+算法在 PDF 中已经说的很清楚。
+
+
+为什么 Backpropagation 算法很快？
+
+1. 用微积分的乘法法则太复杂
+
+2. Backpropagation 算法的优势在于让我们在一反一正遍历一遍神经网络的时候，就可以把所有的偏导数计算出来。（对于所有的权重 w)
+
+
+
+
+
+
 
 
 

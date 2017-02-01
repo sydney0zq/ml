@@ -120,12 +120,12 @@ class Network(object):
         is the learning rate.
         最关键的一步。backpropagation在计算cost函数的时候计算对
         b和w的偏导数分别是多少的一种方法。
-
         """
+        #nabla 就是倒三角, 求 grad
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
         for x, y in mini_batch:
-            #x是一幅图片, y是标签。
+            #x是一幅图片, y是标签。这行用来求偏导数
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
             #如果不清楚这部分的话, 画图显示一下矩阵的形式就可以明白
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
@@ -155,6 +155,7 @@ class Network(object):
             activation = sigmoid(z)
             activations.append(activation)
         #backward pass
+        #计算最后一层的error。sigmoid_prime是sigmoid的导数。
         delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
@@ -166,6 +167,7 @@ class Network(object):
         # scheme in the book, used here to take advantage of the fact
         # that Python can use negative indices in lists.
         for l in xrange(2, self.num_layers):
+            #反向更新
             z = zs[-l]
             sp = sigmoid_prime(z)
             delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
