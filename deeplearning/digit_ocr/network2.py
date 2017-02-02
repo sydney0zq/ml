@@ -8,7 +8,6 @@ regularization, and better initialization of network weights.  Note
 that I have focused on making the code simple, easily readable, and
 easily modifiable.  It is not optimized, and omits many desirable
 features.
-
 """
 
 #### Libraries
@@ -22,7 +21,6 @@ import numpy as np
 
 
 #### Define the quadratic and cross-entropy cost functions
-
 class QuadraticCost(object):
 
     @staticmethod
@@ -38,6 +36,18 @@ class QuadraticCost(object):
         """Return the error delta from the output layer."""
         return (a-y) * sigmoid_prime(z)
 
+
+"""
+为什么把cost实现放在一个类中而不是一个函数?
+计算cost有两个作用:
+    1. 衡量网络输出的值和理想预期值的匹配程度
+    2. 在用Backprop计算偏导的时候, 需要计算errorL(输出误差), 对于cross-entropy
+    为errorL = aL - y
+因为这两个在一起, 所以打包在一起好用一些。
+
+@staticmethod: 类不需要实例化, 直接可以在类上调用该函数
+
+"""
 
 class CrossEntropyCost(object):
 
