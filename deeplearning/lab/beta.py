@@ -11,17 +11,14 @@ from network3 import ConvPoolLayer, FullyConnectedLayer, SoftmaxLayer
 
 mini_batch_size = 10
 training_data, validation_data, test_data = network3.load_data_shared()
-print training_data, validation_data
-exit()
 
-net = Network([FullyConnectedLayer(n_in=784, n_out=100), SoftmaxLayer(n_in=100, n_out=10)],
+"""
+net = Network([FullyConnectedLayer(n_in=1024, n_out=100), SoftmaxLayer(n_in=100, n_out=10)],
                 mini_batch_size)
 
+
 net.SGD(training_data, 60, mini_batch_size, 0.1, validation_data, test_data)
-
-
-exit()
-
+"""
 
 """
 Best validation accuracy of 97.75% obtained at iteration 114999
@@ -29,15 +26,15 @@ Corresponding test accuracy of 97.72%
 """
 
 #using conv layer
-"""
-net = Network([ConvPoolLayer(image_shape=(mini_batch_size, 1, 28, 28), 
+
+net = Network([ConvPoolLayer(image_shape=(mini_batch_size, 1, 32, 32), 
                         filter_shape = (20, 1, 5, 5),
                         poolsize = (2, 2)),
                FullyConnectedLayer(n_in=20*12*12, n_out=100),
                SoftmaxLayer(n_in = 100, n_out = 10)], mini_batch_size)
 
 net.SGD(training_data, 60, mini_batch_size, 0.1, validation_data, test_data)
-"""
+
 
 """
 Best validation accuracy of 98.83% obtained at iteration 129999

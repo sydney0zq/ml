@@ -14,8 +14,8 @@ print "training_data[0][1].shape:", training_data[0][1].shape
 
 print "test_data len:", len(test_data)
 
-import network
-net = network.Network([3072, 100, 10])
+import network3
+net = network3.Network([3072, 100, 10])
 
 #2th: 30 epochs
 #3th: mini_batch_size每次用10个来学习

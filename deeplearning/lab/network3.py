@@ -44,7 +44,6 @@ import scipy.io as sio
 def linear(z): return z
 def ReLU(z): return T.maximum(0.0, z)
 from theano.tensor.nnet import sigmoid
-from theano.tensor import tanh
 
 
 #### Constants
@@ -60,43 +59,48 @@ else:
         "network3.py to set\nthe GPU flag to True."
 
 #### Load the SVHN data
-def load_data_shared(filename="./mnist.pkl.gz"):
-    SVHN_train_RGB = sio.loadmat('train_32x32.mat', squeeze_me=True, struct_as_record=False)
-    SVHN_test_RGB = sio.loadmat('test_32x32.mat', squeeze_me=True, struct_as_record=False)
+def load_data_shared():
+    SVHN_train_RGB = sio.loadmat('../data/train_32x32.mat', squeeze_me=True, struct_as_record=False)
+    SVHN_test_RGB = sio.loadmat('../data/test_32x32.mat', squeeze_me=True, struct_as_record=False)
 
-    #print SVHN_train_RGB['X']
+    #print SVHN_train_RGB['X'][:,:,:,0] return 32*32 * 3channels
+    #print SVHN_train_RGB['X'].shape -->(32, 32, 3, 73257)
 
     ##Convert RGB to greyscale for simplicity
     SVHN_train = (np.sum(SVHN_train_RGB['X'], 2) / 3)
     SVHN_test = (np.sum(SVHN_test_RGB['X'], 2) / 3)
+    #print SVHN_train.shape --> (32, 32, 73257)
 
     ##Vectorize the images
     (dim1, dim2, nImages) = SVHN_train.shape
     SVHN_train_V = np.zeros((nImages, dim1*dim2))
     for i in range(0, nImages):
         SVHN_train_V[i, :] = SVHN_train[:,:,i].flatten()
-    (dim1, dim2, dim3) = SVHN_test.shape
+    (dim1, dim2, nImages) = SVHN_test.shape
     SVHN_test_V = np.zeros((nImages, dim1*dim2))
     for i in range(0, nImages):
         SVHN_test_V[i, :] = SVHN_test[:,:,i].flatten()
 
     ##Split training images into training and validation subsets, including label
     ##and normalize all the 8 bit images to a 1-0 scale
-    train_set = [ SVHN_train_V[0:60000, 0:]/255. , SVHN_train_RGB['y'].T[0:60000] ]
-    valid_set = [ SVHN_test_V[60001:, 0:]/255. , SVHN_train_RGB['y'].T[60001:] ]
-    test_set = SVHN_test_V / 255.
+     
+    train_set = tuple([ SVHN_train_V[0:60000, 0:]/255. , SVHN_train_RGB['y'].T[0:60000] ])
+    valid_set = tuple([ SVHN_train_V[60001:, 0:]/255. , SVHN_train_RGB['y'].T[60001:] ])
+    test_set  = tuple([ SVHN_test_V[:] / 255. , SVHN_test_RGB['y'].T[:] ])
 
-    ##Load data into shared variables so Theano can copy into CPU memory
-    test_set_x = theano.shared(np.asarray(test_set, dtype=theano.config.floatX), borrow=True)
-    train_x, train_y = train_set
-    train_set_x = theano.shared(np.asarray(train_x, dtype=theano.config.floatX), borrow=True)
-    train_set_y = T.cast(theano.shared(np.asarray(train_y, dtype=theano.config.floatX), borrow=True), 'int32')
+    print test_set[0].shape, test_set[1].shape
 
-    valid_x, valid_y = valid_set
-    valid_set_x = theano.shared(np.asarray(valid_x, dtype=theano.config.floatX), borrow=True)
-    valid_set_y = T.cast(theano.shared(np.asarray(valid_y, dtype=theano.config.floatX), borrow=True), 'int32')
-    shared_data = [(train_set_x, train_set_y), (valid_set_x, valid_set_y), test_set_x]
-    return shared_data
+    def shared(data):
+        """Place the data into shared variables.  This allows Theano to copy
+        the data to the GPU, if one is available.
+        """
+        shared_x = theano.shared(
+            np.asarray(data[0], dtype=theano.config.floatX), borrow=True)
+        shared_y = theano.shared(
+            np.asarray(data[1], dtype=theano.config.floatX), borrow=True)
+        return shared_x, T.cast(shared_y, "int32")
+
+    return [shared(train_set), shared(valid_set), shared(test_set)]
 
 #### Main class used to construct and train networks
 class Network(object):
@@ -135,8 +139,7 @@ class Network(object):
 
         # define the (regularized) cost function, symbolic gradients, and updates
         l2_norm_squared = sum([(layer.w**2).sum() for layer in self.layers])
-        cost = self.layers[-1].cost(self)+\
-               0.5*lmbda*l2_norm_squared/num_training_batches
+        cost = self.layers[-1].cost(self) + 0.5*lmbda*l2_norm_squared/num_training_batches
         grads = T.grad(cost, self.params)
         updates = [(param, param-eta*grad)
                    for param, grad in zip(self.params, grads)]
@@ -145,6 +148,7 @@ class Network(object):
         # accuracy in validation and test mini-batches.
         i = T.lscalar() # mini-batch index
         train_mb = theano.function(
+            #[i] index, cost: cost fun
             [i], cost, updates=updates,
             givens={
                 self.x:
